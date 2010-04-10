@@ -172,13 +172,17 @@ class DataView implements Layer {
     /* Now color all the points by their similarity to the held point. */
     float sim;
     int colorval;
+    int red, green, blue;
     for (int i=0; i<dataset.N; i++) {
-      sim = dot(heldvec, dataset.points[i])/sqrt(dot(heldvec, heldvec));
-      colorval = (int) (sim*32+128);
+      sim = dot(heldvec, dataset.points[i])/dot(heldvec, heldvec);
+      colorval = (int) (sim*300+300);
       if (colorval < 0) colorval = 0;
-      if (colorval > 255) colorval = 255;
-      ptcolors[i] = color(255-colorval, colorval, 100);
-      ptcolors_bright[i] = color(305-colorval, colorval+100, 150);
+      if (colorval >= 600) colorval = 599;
+      red = min(255, max(55, colorval+55));
+      green = min(255, max(55, colorval+55-200));
+      blue = min(255, max(55, colorval+55-400));
+      ptcolors[i] = color(red, green, blue);
+      ptcolors_bright[i] = color(red+40, green+40, blue+40);
     }
     
     /* Color the held point itself in yellow and white. */
